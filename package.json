@@ -1,0 +1,57 @@
+{
+  "name": "zync-erc20",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "workspaces": [
+    "client",
+    "server",
+    "contracts"
+  ],
+  "scripts": {
+    "chain": "npx hardhat node --config contracts/hardhat.config.cjs",
+    "deploy": "npx hardhat run contracts/scripts/deploy.cjs --network localhost --config contracts/hardhat.config.cjs",
+    "compile": "npx hardhat compile --config contracts/hardhat.config.cjs",
+    "test:contracts": "npx hardhat test --config contracts/hardhat.config.cjs",
+    "dev": "concurrently -n server,client -c cyan,magenta \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "node --watch server/src/server.js",
+    "client:dev": "node node_modules/vite/bin/vite.js --config client/vite.config.ts",
+    "start": "concurrently -n server,client -c cyan,magenta \"npm run server:start\" \"npm run client:preview\"",
+    "server:start": "node server/src/server.js",
+    "client:build": "node node_modules/vite/bin/vite.js build --config client/vite.config.ts",
+    "client:preview": "node node_modules/vite/bin/vite.js preview --config client/vite.config.ts"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "klinecharts": "^10.0.0-beta1",
+    "lightweight-charts": "^5.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "viem": "^2.21.19",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@metamask/logo": "^4.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@rainbow-me/rainbowkit": "^2.2.10",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^9.2.1",
+    "hardhat": "^2.22.0",
+    "postcss": "^8.5.10",
+    "simple-icons": "^14.15.0",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.10"
+  }
+}

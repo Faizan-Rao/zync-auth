@@ -1,0 +1,14 @@
+node_modules
+dist
+.env
+
+# Vite
+client/vite.config.ts.timestamp-*.mjs
+
+# Hardhat
+contracts/cache
+contracts/artifacts
+contracts/typechain-types
+
+# Server matching state
+server/data/
