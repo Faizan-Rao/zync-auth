@@ -53,4 +53,15 @@
   .ticker-track { animation: ticker-marquee 36s linear infinite; }
   .ticker-track:hover { animation-play-state: paused; }
   @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+  /* circular rotation animations */
+  @keyframes rotateClockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes rotateCounterClockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
 }
