@@ -961,9 +961,9 @@ export function HomePage() {
             </p>
           </div>
 
-          {/* Circular ring layout */}
+          {/* Circular ring layout - 4 concentric circles */}
           <div className="relative mx-auto mt-16 flex items-center justify-center" style={{ height: 600 }}>
-            {/* Single circular ring with all icons */}
+            {/* Outermost circle - largest icons */}
             {[
               { img: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png", angle: 0 },
               { img: "https://assets.coingecko.com/coins/images/279/large/ethereum.png", angle: 15 },
@@ -998,37 +998,130 @@ export function HomePage() {
               
               return (
                 <div
-                  key={idx}
+                  key={`outer-${idx}`}
                   className="absolute rounded-full overflow-hidden shadow-2xl"
                   style={{
                     width: size,
                     height: size,
                     left: `calc(50% + ${x}px - ${size / 2}px)`,
                     top: `calc(50% + ${y}px - ${size / 2}px)`,
-                    border: "3px solid rgba(56,189,248,0.3)",
                     background: "rgba(10,20,40,0.95)",
                     animation: `float ${3 + (idx % 5)}s ease-in-out ${idx * 0.2}s infinite`,
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(56,189,248,0.2)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
                   }}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
                 </div>
               );
             })}
-            
-            {/* Visible ring circle */}
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: 500,
-                height: 500,
-                border: "2px solid rgba(239,83,80,0.4)",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                pointerEvents: "none",
-              }}
-            />
+
+            {/* Second circle - medium icons */}
+            {[
+              { img: "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png", angle: 0 },
+              { img: "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png", angle: 30 },
+              { img: "https://assets.coingecko.com/coins/images/1481/large/cosmos_hub.png", angle: 60 },
+              { img: "https://assets.coingecko.com/coins/images/14495/large/sui.png", angle: 90 },
+              { img: "https://assets.coingecko.com/coins/images/22840/large/jup.png", angle: 120 },
+              { img: "https://assets.coingecko.com/coins/images/17980/large/ton_symbol.png", angle: 150 },
+              { img: "https://assets.coingecko.com/coins/images/11939/large/shiba.png", angle: 180 },
+              { img: "https://assets.coingecko.com/coins/images/13573/large/Lido_DAO.png", angle: 210 },
+              { img: "https://assets.coingecko.com/coins/images/2518/large/weth.png", angle: 240 },
+              { img: "https://assets.coingecko.com/coins/images/9956/large/Badge_Dai.png", angle: 270 },
+              { img: "https://assets.coingecko.com/coins/images/3406/large/SNX.png", angle: 300 },
+              { img: "https://assets.coingecko.com/coins/images/12645/large/AAVE.png", angle: 330 },
+            ].map(({ img, angle }, idx) => {
+              const radius = 180;
+              const size = 50;
+              const radian = ((angle - 90) * Math.PI) / 180;
+              const x = Math.cos(radian) * radius;
+              const y = Math.sin(radian) * radius;
+              
+              return (
+                <div
+                  key={`mid-${idx}`}
+                  className="absolute rounded-full overflow-hidden shadow-2xl"
+                  style={{
+                    width: size,
+                    height: size,
+                    left: `calc(50% + ${x}px - ${size / 2}px)`,
+                    top: `calc(50% + ${y}px - ${size / 2}px)`,
+                    background: "rgba(10,20,40,0.95)",
+                    animation: `float ${3.5 + (idx % 4)}s ease-in-out ${idx * 0.15}s infinite`,
+                    boxShadow: "0 6px 24px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </div>
+              );
+            })}
+
+            {/* Third circle - smaller icons */}
+            {[
+              { img: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png", angle: 0 },
+              { img: "https://assets.coingecko.com/coins/images/279/large/ethereum.png", angle: 45 },
+              { img: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png", angle: 90 },
+              { img: "https://assets.coingecko.com/coins/images/4128/large/solana.png", angle: 135 },
+              { img: "https://assets.coingecko.com/coins/images/325/large/Tether.png", angle: 180 },
+              { img: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png", angle: 225 },
+              { img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png", angle: 270 },
+              { img: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png", angle: 315 },
+            ].map(({ img, angle }, idx) => {
+              const radius = 110;
+              const size = 40;
+              const radian = ((angle - 90) * Math.PI) / 180;
+              const x = Math.cos(radian) * radius;
+              const y = Math.sin(radian) * radius;
+              
+              return (
+                <div
+                  key={`inner-${idx}`}
+                  className="absolute rounded-full overflow-hidden shadow-xl"
+                  style={{
+                    width: size,
+                    height: size,
+                    left: `calc(50% + ${x}px - ${size / 2}px)`,
+                    top: `calc(50% + ${y}px - ${size / 2}px)`,
+                    background: "rgba(10,20,40,0.95)",
+                    animation: `float ${4 + (idx % 3)}s ease-in-out ${idx * 0.1}s infinite`,
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </div>
+              );
+            })}
+
+            {/* Innermost circle - smallest icons */}
+            {[
+              { img: "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png", angle: 0 },
+              { img: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png", angle: 90 },
+              { img: "https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg", angle: 180 },
+              { img: "https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg", angle: 270 },
+            ].map(({ img, angle }, idx) => {
+              const radius = 50;
+              const size = 32;
+              const radian = ((angle - 90) * Math.PI) / 180;
+              const x = Math.cos(radian) * radius;
+              const y = Math.sin(radian) * radius;
+              
+              return (
+                <div
+                  key={`center-${idx}`}
+                  className="absolute rounded-full overflow-hidden shadow-lg"
+                  style={{
+                    width: size,
+                    height: size,
+                    left: `calc(50% + ${x}px - ${size / 2}px)`,
+                    top: `calc(50% + ${y}px - ${size / 2}px)`,
+                    background: "rgba(10,20,40,0.95)",
+                    animation: `float ${4.5 + (idx % 2)}s ease-in-out ${idx * 0.05}s infinite`,
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </div>
+              );
+            })}
           </div>
 
           {/* Feature pills below */}
