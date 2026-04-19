@@ -1249,8 +1249,207 @@ export function HomePage() {
         </section>
       )}
 
+      {/* ── STATISTICS ── */}
+      <section className="mx-auto max-w-[1200px] px-6 py-24">
+        <div ref={statsRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              label: "24h Volume", value: `$${vol.val}B`, color: "#3dffa0",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                  <polyline points="16 7 22 7 22 13"/>
+                </svg>
+              ),
+            },
+            {
+              label: "Total Users", value: "150K+", color: "#38bdf8",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              ),
+            },
+            {
+              label: "Transactions", value: "2.5M+", color: "#a78bfa",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"/>
+                  <path d="M15 6l6 6-6 6"/>
+                  <path d="M19 6H9a4 4 0 0 0 0 8"/>
+                </svg>
+              ),
+            },
+            {
+              label: "Open Interest", value: `$${oi.val}B`, color: "#fbbf24",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2"/>
+                  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                  <line x1="12" y1="12" x2="12" y2="16"/>
+                  <line x1="10" y1="14" x2="14" y2="14"/>
+                </svg>
+              ),
+            },
+          ].map(({ label, value, color, icon }) => (
+            <div key={label} className="rounded-2xl p-6 text-center transition-all hover:scale-[1.02]"
+              style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <div className="mb-3 flex justify-center" style={{ color }}>{icon}</div>
+              <div className="mb-1 text-3xl font-bold" style={{ color }}>{value}</div>
+              <div className="text-sm text-white/50">{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── WHY CHOOSE ZYNCSWAP ── */}
+      <section style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div className="mx-auto max-w-[1200px] px-6 py-24">
+          <div className="mb-14 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#3dffa0" }}>Why choose us</p>
+            <h2 className="text-4xl font-bold text-white">Built for serious traders</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-white/50">
+              Experience the perfect blend of speed, security, and simplicity in one powerful platform.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Lightning Fast", desc: "Sub-50ms execution with intra-block speed. No waiting, no delays.", color: "#fbbf24", bg: "rgba(251,191,36,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+              },
+              {
+                title: "Bank-Grade Security", desc: "Audited smart contracts, non-custodial architecture, and 2FA protection.", color: "#3dffa0", bg: "rgba(61,255,160,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+              },
+              {
+                title: "Lowest Fees", desc: "0.3% swap fee with no hidden costs. What you see is what you pay.", color: "#38bdf8", bg: "rgba(56,189,248,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+              },
+              {
+                title: "Multi-Chain Support", desc: "Trade across Ethereum, Arbitrum, Optimism, and more from one interface.", color: "#a78bfa", bg: "rgba(167,139,250,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+              },
+              {
+                title: "Advanced Tools", desc: "Limit orders, DCA, trailing stops, copy trading, and volatility bots.", color: "#f472b6", bg: "rgba(244,114,182,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>,
+              },
+              {
+                title: "24/7 Liquidity", desc: "Access deep liquidity pools and smart routing for best execution.", color: "#34d399", bg: "rgba(52,211,153,0.1)",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>,
+              },
+            ].map(({ title, desc, icon, color, bg }) => (
+              <div key={title} className="group rounded-2xl p-6 transition-all hover:scale-[1.02]"
+                style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl" style={{ background: bg, color }}>
+                  {icon}
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-white">{title}</h3>
+                <p className="text-sm leading-relaxed text-white/50">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="mx-auto max-w-[1200px] px-6 py-24">
+        <div className="mb-14 text-center">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>Testimonials</p>
+          <h2 className="text-4xl font-bold text-white">Trusted by traders worldwide</h2>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { name: "Alex Chen", role: "DeFi Trader", img: "/feedback/h-decor-1.png", quote: "ZyncSwap's execution speed is unmatched. I've tried every DEX and this is the fastest by far.", rating: 5 },
+            { name: "Sarah Martinez", role: "Crypto Investor", img: "/feedback/h-decor-2.png", quote: "The copy trading feature helped me learn from the best. My portfolio is up 40% this quarter.", rating: 5 },
+            { name: "Mike Johnson", role: "Day Trader", img: "/feedback/h-decor-3.png", quote: "Advanced order types like trailing stops are game-changers. Finally a DEX that gets it.", rating: 5 },
+            { name: "Emma Wilson", role: "Yield Farmer", img: "/feedback/h-decor-4.png", quote: "Smart routing always finds me the best prices. Saved thousands in slippage already.", rating: 5 },
+            { name: "David Kim", role: "Whale Trader", img: "/feedback/h-decor-5.png", quote: "Non-custodial with this level of features? ZyncSwap is the future of DeFi trading.", rating: 5 },
+            { name: "Lisa Brown", role: "NFT Collector", img: "/feedback/h-decor-6.png", quote: "Clean UI, fast swaps, low fees. Everything I need in one place. Highly recommend!", rating: 5 },
+          ].map(({ name, role, img, quote, rating }) => (
+            <div key={name} className="rounded-2xl p-6"
+              style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <div className="mb-4 flex items-center gap-3">
+                <img src={img} alt={name}
+                  className="h-12 w-12 rounded-full object-cover"
+                  style={{ border: "1px solid rgba(56,189,248,0.2)" }} />
+                <div>
+                  <div className="font-semibold text-white">{name}</div>
+                  <div className="text-xs text-white/40">{role}</div>
+                </div>
+              </div>
+              <p className="mb-4 text-sm leading-relaxed text-white/60">"{quote}"</p>
+              <div className="flex gap-1">
+                {Array.from({ length: rating }).map((_, i) => (
+                  <span key={i} className="text-yellow-400">★</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── ROADMAP ── */}
+      <section style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div className="mx-auto max-w-[1200px] px-6 py-24">
+          <div className="mb-14 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#3dffa0" }}>Roadmap</p>
+            <h2 className="text-4xl font-bold text-white">What's coming next</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-white/50">
+              We're constantly innovating to bring you the best trading experience.
+            </p>
+          </div>
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-500 via-blue-500 to-purple-500 opacity-30 hidden lg:block" />
+            
+            <div className="space-y-8">
+              {[
+                { quarter: "Q1 2025", status: "Completed", color: "#3dffa0", items: ["Platform Launch", "Swap & Limit Orders", "MetaMask Integration", "Audit Completion"] },
+                { quarter: "Q2 2025", status: "In Progress", color: "#38bdf8", items: ["ZYNC Token Launch", "Staking & Governance", "Mobile App Beta", "Multi-Chain Expansion"] },
+                { quarter: "Q3 2025", status: "Planned", color: "#a78bfa", items: ["Perpetual Futures", "Options Trading", "Lending Protocol", "DAO Treasury"] },
+                { quarter: "Q4 2025", status: "Planned", color: "#fbbf24", items: ["Cross-Chain Bridge", "NFT Marketplace", "Social Trading", "Institutional API"] },
+              ].map(({ quarter, status, color, items }) => (
+                <div key={quarter} className="relative flex gap-6">
+                  {/* Timeline dot */}
+                  <div className="hidden lg:flex shrink-0 h-16 w-16 items-center justify-center rounded-full"
+                    style={{ background: "#0d1424", border: `2px solid ${color}` }}>
+                    <div className="h-3 w-3 rounded-full" style={{ background: color, boxShadow: `0 0 12px ${color}` }} />
+                  </div>
+                  
+                  {/* Content card */}
+                  <div className="flex-1 rounded-2xl p-6"
+                    style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="text-2xl font-bold text-white">{quarter}</h3>
+                      <span className="rounded-full px-3 py-1 text-xs font-semibold"
+                        style={{ background: `${color}20`, color, border: `1px solid ${color}40` }}>
+                        {status}
+                      </span>
+                    </div>
+                    <ul className="grid gap-2 sm:grid-cols-2">
+                      {items.map(item => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-white/60">
+                          <svg className="h-4 w-4 shrink-0" style={{ color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
+                          </svg>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA BANNER ── */}
-      <section className="mx-auto max-w-[1200px] px-6 pb-24">
+      <section className="mx-auto max-w-[1200px] px-6 pb-24 pt-24">
         <div className="relative overflow-hidden rounded-3xl p-12 text-center"
           style={{ background: "linear-gradient(135deg,rgba(61,255,160,0.12),rgba(56,189,248,0.12))", border: "1px solid rgba(61,255,160,0.2)" }}>
           <div className="pointer-events-none absolute inset-0 opacity-30"
@@ -1397,6 +1596,14 @@ export function HomePage() {
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(-50%) translateX(-6px); }
           to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+        }
+        @keyframes rotateClockwise {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        @keyframes rotateCounterClockwise {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(-360deg); }
         }
         @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbitSpinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
