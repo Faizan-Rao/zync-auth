@@ -246,21 +246,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-function FeatureCard({ icon, title, desc, delay }: { icon: React.ReactNode; title: string; desc: string; delay: number }) {
-  const ref = useFadeIn(delay);
-  return (
-    <div ref={ref} className="rounded-2xl p-6 transition-all hover:border-white/[0.15]"
-      style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
-      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl"
-        style={{ background: "rgba(61,255,160,0.1)", color: "#3dffa0" }}>
-        {icon}
-      </div>
-      <h3 className="mb-2 text-base font-semibold text-white">{title}</h3>
-      <p className="text-sm leading-relaxed text-white/50">{desc}</p>
-    </div>
-  );
-}
-
 function StepCard({ n, title, desc, last, delay }: { n: string; title: string; desc: string; last: boolean; delay: number }) {
   const ref = useFadeIn(delay);
   return (
@@ -388,14 +373,300 @@ function MiniSwapWidget() {
 }
 
 // ── Static data ───────────────────────────────────────────────────────────────
-const FEATURES = [
-  { title: "Instant Swaps",    desc: "Swap any token pair in seconds with live Binance prices and minimal slippage.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> },
-  { title: "Pro Charts",       desc: "Full TradingView integration with drawing tools, indicators, and real-time candlesticks.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> },
-  { title: "Non-Custodial",    desc: "Your keys, your crypto. We never hold your funds — connect any EVM wallet and trade freely.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> },
-  { title: "Limit Orders",     desc: "Set your price and walk away. Limit orders execute automatically when the market hits your target.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> },
-  { title: "Multi-Wallet",     desc: "MetaMask, Coinbase, WalletConnect and more — connect with any EIP-6963 compatible wallet.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
-  { title: "ZYNC Token",       desc: "The native utility token powering AureLexa. Stake, govern, and unlock premium features on launch.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg> },
-];
+// Next Level Tools bento illustrations
+function IllustrationFastExecution() {
+  return (
+    <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 130" style={{ background: "#0a0f1a" }}>
+      {/* ── dashed connecting lines ── */}
+      <line x1="88" y1="52" x2="118" y2="52" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4,3" />
+      <line x1="222" y1="52" x2="252" y2="52" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4,3" />
+
+      {/* ── Block N-1 (dimmed, dashed border) ── */}
+      <rect x="18" y="22" width="70" height="60" rx="8"
+        fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="4,3" />
+      <text x="53" y="46" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.35)">Block</text>
+      <text x="53" y="64" textAnchor="middle" fontSize="16" fontWeight="800" fill="rgba(255,255,255,0.3)">N-1</text>
+
+      {/* ── Block N (active, green border) ── */}
+      <rect x="118" y="10" width="104" height="84" rx="10"
+        fill="rgba(61,255,160,0.06)" stroke="#3dffa0" strokeWidth="2" />
+      <text x="170" y="32" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(255,255,255,0.7)">Block N</text>
+      {/* ZYNC TX inner box */}
+      <rect x="130" y="38" width="80" height="30" rx="6" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.5)" strokeWidth="1" />
+      <text x="170" y="58" textAnchor="middle" fontSize="11" fontWeight="800" fill="#3dffa0">ZYNC TX</text>
+      {/* <50ms label */}
+      <text x="170" y="108" textAnchor="middle" fontSize="10" fontWeight="600" fill="#3dffa0">&lt;50ms</text>
+
+      {/* ── Block N+1 (dimmed, dashed border) ── */}
+      <rect x="252" y="22" width="70" height="60" rx="8"
+        fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="4,3" />
+      <text x="287" y="46" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.35)">Block</text>
+      <text x="287" y="64" textAnchor="middle" fontSize="16" fontWeight="800" fill="rgba(255,255,255,0.3)">N+1</text>
+      {/* Others red box below N+1 */}
+      <rect x="258" y="88" width="58" height="20" rx="5" fill="rgba(239,83,80,0.15)" stroke="rgba(239,83,80,0.4)" strokeWidth="1" />
+      <text x="287" y="102" textAnchor="middle" fontSize="9" fill="#ef5350">Others</text>
+      <text x="287" y="120" textAnchor="middle" fontSize="8" fill="rgba(239,83,80,0.6)">~400ms wait</text>
+    </svg>
+  );
+}
+
+function IllustrationSmartRouting() {
+  // Routes: top=Raydium(best/green), mid=PumpFun, bot=Orca
+  // SVG coords: token circle at (52,110), exchange boxes ~(160,y), BUY circle at (285,70)
+  // Paths from token → box → BUY (only best route continues to BUY)
+  const routes = [
+    { id: "r0", label: "Raydium", price: "$0.0138", cy: 70,  best: true  },
+    { id: "r1", label: "PumpFun", price: "$0.0141", cy: 110, best: false },
+    { id: "r2", label: "Orca",    price: "$0.0142", cy: 150, best: false },
+  ];
+  return (
+    <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 200" style={{ background: "#0a0f1a" }}>
+      {/* ── define paths for animateMotion ── */}
+      <defs>
+        {/* token → each exchange box */}
+        <path id="sr-p0" d="M72,110 C110,110 130,70 158,70" />
+        <path id="sr-p1" d="M72,110 C110,110 130,110 158,110" />
+        <path id="sr-p2" d="M72,110 C110,110 130,150 158,150" />
+        {/* best box → BUY */}
+        <path id="sr-buy" d="M222,70 C248,70 262,70 268,70" />
+      </defs>
+
+      {/* ── route lines ── */}
+      {routes.map((r) => (
+        <path
+          key={r.id + "-line"}
+          d={r.id === "r0" ? "M72,110 C110,110 130,70 158,70"
+           : r.id === "r1" ? "M72,110 C110,110 130,110 158,110"
+           : "M72,110 C110,110 130,150 158,150"}
+          fill="none"
+          stroke={r.best ? "#3dffa0" : "rgba(255,255,255,0.18)"}
+          strokeWidth={r.best ? 2 : 1.5}
+        />
+      ))}
+
+      {/* best route → BUY arrow line */}
+      <path d="M222,70 L268,70" fill="none" stroke="#3dffa0" strokeWidth="2" markerEnd="url(#arrow)" />
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#3dffa0" />
+        </marker>
+      </defs>
+
+      {/* ── token circle (left) ── */}
+      <circle cx="52" cy="110" r="32" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.4)" strokeWidth="1.5" />
+
+      {/* ── exchange boxes ── */}
+      {routes.map((r) => (
+        <g key={r.id + "-box"}>
+          <rect x="158" y={r.cy - 18} width="64" height="36" rx="7"
+            fill={r.best ? "rgba(61,255,160,0.08)" : "rgba(255,255,255,0.04)"}
+            stroke={r.best ? "rgba(61,255,160,0.6)" : "rgba(255,255,255,0.12)"}
+            strokeWidth={r.best ? 1.5 : 1}
+          />
+          <text x="190" y={r.cy - 4} textAnchor="middle" fontSize="9"
+            fill={r.best ? "#3dffa0" : "rgba(255,255,255,0.4)"} fontWeight="600">{r.label}</text>
+          <text x="190" y={r.cy + 9} textAnchor="middle" fontSize="10"
+            fill={r.best ? "#fff" : "rgba(255,255,255,0.3)"} fontWeight="700">{r.price}</text>
+        </g>
+      ))}
+
+      {/* ── BUY circle (right) ── */}
+      <circle cx="285" cy="70" r="22" fill="rgba(61,255,160,0.15)" stroke="#3dffa0" strokeWidth="2" />
+      <text x="285" y="75" textAnchor="middle" fontSize="11" fontWeight="800" fill="#3dffa0">BUY</text>
+
+      {/* ── animated dots: one per route, staggered ── */}
+      {routes.map((r, i) => (
+        <circle key={r.id + "-dot"} r="4"
+          fill={r.best ? "#3dffa0" : "rgba(255,255,255,0.5)"}
+          opacity="0.9">
+          <animateMotion dur="2s" begin={`${i * 0.55}s`} repeatCount="indefinite">
+            <mpath href={`#sr-p${i}`} />
+          </animateMotion>
+        </circle>
+      ))}
+      {/* animated dot on best route → BUY */}
+      <circle r="4" fill="#3dffa0" opacity="0.9">
+        <animateMotion dur="1.2s" begin="0.9s" repeatCount="indefinite">
+          <mpath href="#sr-buy" />
+        </animateMotion>
+      </circle>
+    </svg>
+  );
+}
+
+function IllustrationVolatilityBot() {
+  // peaks (SELL) and troughs (BUY) in viewBox 340x160
+  // zigzag: start low, alternate trough→peak→trough...
+  // points: (0,130) trough, (50,55) peak, (90,120) trough, (140,35) peak, (175,115) trough, (215,50) peak, (255,125) trough, (295,45) peak, (340,100)
+  const pts = "0,130 50,55 90,120 140,35 175,115 215,50 255,125 295,45 340,100";
+  const polyPts = pts + " 340,160 0,160";
+
+  const peaks   = [ { x: 50,  y: 55  }, { x: 140, y: 35  }, { x: 215, y: 50  }, { x: 295, y: 45  } ];
+  const troughs = [ { x: 0,   y: 130 }, { x: 90,  y: 120 }, { x: 175, y: 115 }, { x: 255, y: 125 } ];
+  // only label 2 peaks and 2 troughs like origin
+  const sellLabels = [peaks[1], peaks[3]];
+  const buyLabels  = [troughs[1], troughs[2]];
+
+  return (
+    <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 160" style={{ background: "#0a0f1a" }}>
+      <defs>
+        <linearGradient id="vbot-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(56,189,248,0.45)" />
+          <stop offset="100%" stopColor="rgba(56,189,248,0.02)" />
+        </linearGradient>
+      </defs>
+
+      {/* filled area */}
+      <polygon points={polyPts} fill="url(#vbot-fill)" />
+      {/* zigzag line */}
+      <polyline points={pts} fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinejoin="round" />
+
+      {/* peak dots (red/SELL) */}
+      {peaks.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#ef5350" />
+      ))}
+      {/* trough dots (green/BUY) */}
+      {troughs.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#3dffa0" />
+      ))}
+
+      {/* SELL labels above selected peaks */}
+      {sellLabels.map((p, i) => (
+        <text key={i} x={p.x} y={p.y - 10} textAnchor="middle" fontSize="9" fontWeight="700" fill="#ef5350">SELL</text>
+      ))}
+      {/* BUY labels below selected troughs */}
+      {buyLabels.map((p, i) => (
+        <text key={i} x={p.x} y={p.y + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#3dffa0">BUY</text>
+      ))}
+    </svg>
+  );
+}
+
+function IllustrationCopyTrading() {
+  return (
+    <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 140" style={{ background: "#0a0f1a" }}>
+      <defs>
+        {/* arrow marker left→right */}
+        <marker id="ct-arr-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#3dffa0" />
+        </marker>
+        {/* arrow marker right→left */}
+        <marker id="ct-arr-l" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+          <path d="M6,0 L0,3 L6,6 Z" fill="#3dffa0" />
+        </marker>
+        {/* animated dot path left→right */}
+        <path id="ct-path-r" d="M118,70 L175,70" />
+        {/* animated dot path right→left */}
+        <path id="ct-path-l" d="M222,70 L165,70" />
+      </defs>
+
+      {/* ── Left box: Wallet 1 (blue border) ── */}
+      <rect x="10" y="15" width="108" height="110" rx="12"
+        fill="rgba(56,189,248,0.06)" stroke="#38bdf8" strokeWidth="1.5" />
+      <text x="64" y="38" textAnchor="middle" fontSize="11" fontWeight="600" fill="#38bdf8">Wallet 1</text>
+      <text x="64" y="56" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
+      {/* Pepe-like token circle */}
+      <circle cx="46" cy="95" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
+      <text x="46" y="100" textAnchor="middle" fontSize="14">🐸</text>
+      <text x="82" y="100" textAnchor="middle" fontSize="12" fontWeight="700" fill="white">1 ETH</text>
+
+      {/* ── COPY badge in center ── */}
+      <rect x="138" y="56" width="64" height="28" rx="14"
+        fill="rgba(61,255,160,0.12)" stroke="#3dffa0" strokeWidth="1.5" />
+      <text x="170" y="75" textAnchor="middle" fontSize="11" fontWeight="800" fill="#3dffa0">COPY</text>
+
+      {/* arrows */}
+      <line x1="120" y1="65" x2="136" y2="65" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-r)" />
+      <line x1="220" y1="75" x2="204" y2="75" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-l)" />
+
+      {/* ── Right box: Your Wallet (green border) ── */}
+      <rect x="222" y="15" width="108" height="110" rx="12"
+        fill="rgba(61,255,160,0.06)" stroke="#3dffa0" strokeWidth="1.5" />
+      <text x="276" y="38" textAnchor="middle" fontSize="11" fontWeight="600" fill="#3dffa0">Your Wallet</text>
+      <text x="276" y="56" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
+      <circle cx="258" cy="95" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
+      <text x="258" y="100" textAnchor="middle" fontSize="14">🐸</text>
+      <text x="294" y="100" textAnchor="middle" fontSize="11" fontWeight="700" fill="white">0.1 ETH</text>
+
+      {/* ── animated dots ── */}
+      <circle r="4" fill="#3dffa0" opacity="0.9">
+        <animateMotion dur="1.5s" repeatCount="indefinite">
+          <mpath href="#ct-path-r" />
+        </animateMotion>
+      </circle>
+      <circle r="4" fill="#3dffa0" opacity="0.9">
+        <animateMotion dur="1.5s" begin="0.75s" repeatCount="indefinite">
+          <mpath href="#ct-path-l" />
+        </animateMotion>
+      </circle>
+    </svg>
+  );
+}
+
+function IllustrationAIResearch() {
+  const tokens = [
+    { sym: "BONK",  price: "$0.000018", mc: "MC: $1.2B", vol: "24h vol: $89M",  emoji: "🟡" },
+    { sym: "FLOKI", price: "$0.00012",  mc: "MC: $1.1B", vol: "24h vol: $210M", emoji: "🐕" },
+    { sym: "WOJAK", price: "$0.014",    mc: "MC: $14M",  vol: "24h vol: $2.1M", emoji: "⚪" },
+  ];
+  // SVG layout: AI circle at (52, 100), rows at y=40,100,160, boxes start x=110
+  const rowY = [42, 100, 158];
+  return (
+    <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 200" style={{ background: "#0a0f1a" }}>
+      <defs>
+        <path id="ai-p0" d="M80,100 C95,100 95,42 110,42" />
+        <path id="ai-p1" d="M80,100 L110,100" />
+        <path id="ai-p2" d="M80,100 C95,100 95,158 110,158" />
+        {/* glow filter for AI circle */}
+        <filter id="ai-glow">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      {/* ── connecting lines ── */}
+      {["M80,100 C95,100 95,42 110,42", "M80,100 L110,100", "M80,100 C95,100 95,158 110,158"].map((d, i) => (
+        <path key={i} d={d} fill="none" stroke="rgba(56,189,248,0.4)" strokeWidth="1.5" />
+      ))}
+
+      {/* ── AI radar circle ── */}
+      <circle cx="52" cy="100" r="28" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" strokeWidth="2" filter="url(#ai-glow)" />
+      {/* radar cross */}
+      <line x1="52" y1="76" x2="52" y2="124" stroke="#38bdf8" strokeWidth="1.5" opacity="0.7" />
+      <line x1="28" y1="100" x2="76" y2="100" stroke="#38bdf8" strokeWidth="1.5" opacity="0.7" />
+      <circle cx="52" cy="100" r="14" fill="none" stroke="#38bdf8" strokeWidth="1" opacity="0.5" />
+      <circle cx="52" cy="100" r="6" fill="rgba(56,189,248,0.4)" stroke="#38bdf8" strokeWidth="1" />
+      {/* radar sweep dot */}
+      <circle cx="62" cy="90" r="3" fill="#38bdf8" opacity="0.8" />
+
+      {/* ── token rows ── */}
+      {tokens.map((t, i) => (
+        <g key={t.sym}>
+          <rect x="110" y={rowY[i] - 22} width="220" height="44" rx="8"
+            fill="rgba(56,189,248,0.05)" stroke="rgba(56,189,248,0.35)" strokeWidth="1.2" />
+          {/* token icon circle */}
+          <circle cx="128" cy={rowY[i]} r="14" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.3)" strokeWidth="1" />
+          <text x="128" y={rowY[i] + 5} textAnchor="middle" fontSize="13">{t.emoji}</text>
+          {/* name + price */}
+          <text x="148" y={rowY[i] - 4} fontSize="11" fontWeight="800" fill="white">{t.sym}</text>
+          <text x="148" y={rowY[i] + 10} fontSize="9" fill="rgba(255,255,255,0.4)">{t.price}</text>
+          {/* MC + vol */}
+          <text x="322" y={rowY[i] - 4} textAnchor="end" fontSize="9" fill="rgba(255,255,255,0.5)">{t.mc}</text>
+          <text x="322" y={rowY[i] + 10} textAnchor="end" fontSize="9" fill="rgba(255,255,255,0.35)">{t.vol}</text>
+        </g>
+      ))}
+
+      {/* ── animated dots along each route ── */}
+      {(["#ai-p0","#ai-p1","#ai-p2"] as const).map((href, i) => (
+        <circle key={i} r="3.5" fill="#38bdf8" opacity="0.9">
+          <animateMotion dur="1.6s" begin={`${i * 0.45}s`} repeatCount="indefinite">
+            <mpath href={href} />
+          </animateMotion>
+        </circle>
+      ))}
+    </svg>
+  );
+}
 
 const HOW_STEPS = [
   { n: "01", title: "Connect your wallet", desc: "Click 'Connect wallet' and choose from MetaMask, Coinbase Wallet, or any injected EVM provider." },
@@ -516,15 +787,112 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
+      {/* ── NEXT LEVEL TOOLS ── */}
       <section className="mx-auto max-w-[1200px] px-6 py-24">
         <div ref={featHeadRef} className="mb-14 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#3dffa0" }}>Why ZYNC</p>
-          <h2 className="text-4xl font-bold text-white">Everything you need to trade</h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/50">A complete DeFi trading suite — from quick swaps to professional perpetuals, all in one place.</p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>Trade with</p>
+          <h2 className="text-4xl font-bold text-white">Next Level Tools</h2>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f, i) => <FeatureCard key={f.title} {...f} delay={i * 0.08} />)}
+        {/* Bento grid matching origin: 3 cols, left/right have 2 rows each, center has Advanced Orders + Copy Trading stacked */}
+        <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+          {/* Left column */}
+          <div className="flex flex-col gap-4">
+            <div className="flex-1 rounded-2xl p-6" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">Fastest Execution</h3>
+              <p className="mt-1 text-sm text-white/50">Intra-block speed. Execute your limit orders with no block delay.</p>
+              <IllustrationFastExecution />
+            </div>
+            <div className="flex-1 rounded-2xl p-6" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">Volatility Bot</h3>
+              <p className="mt-1 text-sm text-white/50">Farm volatility by buying the dips and selling the rebounds, automatically.</p>
+              <IllustrationVolatilityBot />
+            </div>
+          </div>
+
+          {/* Center column — Advanced Orders (tall) + Copy Trading */}
+          <div className="flex flex-col gap-4">
+            <div className="rounded-2xl p-6 flex-1" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">Advanced Orders</h3>
+              <p className="mt-1 text-sm text-white/50">Precise limit orders to automate your Take Profit, Stop Loss, DCA, and trailing.</p>
+              {/* Chart: all in one SVG for pixel-perfect layout */}
+              <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 200" style={{ background: "#0a0f1a" }}>
+                {/* ── horizontal zone lines ── */}
+                {/* green dashed — TP level at y=62 */}
+                <line x1="0" y1="62" x2="290" y2="62" stroke="rgba(61,255,160,0.55)" strokeWidth="1.2" strokeDasharray="5,4" />
+                {/* grey dashed — avg entry at y=108 */}
+                <line x1="0" y1="108" x2="290" y2="108" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="5,4" />
+                {/* red dashed — SL level at y=142 */}
+                <line x1="0" y1="142" x2="290" y2="142" stroke="rgba(239,83,80,0.55)" strokeWidth="1.2" strokeDasharray="5,4" />
+
+                {/* ── price curve (S-shape, bottom-left → top-right) ── */}
+                <path
+                  id="adv-curve"
+                  d="M10,185 C30,184 50,180 70,172 C90,163 100,150 115,135 C124,125 128,122 138,119 C148,116 152,124 160,119 C172,112 195,82 230,50 C252,30 272,18 310,10"
+                  fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                />
+
+                {/* ── static DCA dots — frozen on path via animateMotion at fixed keyPoints ── */}
+                {[0.22, 0.38, 0.54].map((pos, i) => (
+                  <circle key={i} r="4.5" fill="#38bdf8">
+                    <animateMotion
+                      dur="1s"
+                      keyPoints={`${pos};${pos}`}
+                      keyTimes="0;1"
+                      calcMode="linear"
+                      repeatCount="indefinite"
+                    >
+                      <mpath href="#adv-curve" />
+                    </animateMotion>
+                  </circle>
+                ))}
+
+                {/* ── animated dot travelling the curve ── */}
+                <circle r="5" fill="#fff" opacity="0.9">
+                  <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+                    <mpath href="#adv-curve" />
+                  </animateMotion>
+                </circle>
+                {/* glow ring around travelling dot */}
+                <circle r="9" fill="none" stroke="rgba(56,189,248,0.35)" strokeWidth="2">
+                  <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+                    <mpath href="#adv-curve" />
+                  </animateMotion>
+                </circle>
+
+                {/* ── TP label — top right, near curve end ── */}
+                <rect x="272" y="6" width="42" height="24" rx="7" fill="#22c55e" />
+                <text x="293" y="23" textAnchor="middle" fontSize="11" fontWeight="700" fill="white">TP</text>
+
+                {/* ── avg entry text + DCA label ── */}
+                <text x="230" y="105" textAnchor="end" fontSize="9" fill="rgba(255,255,255,0.35)" fontStyle="italic">avg entry</text>
+                <rect x="272" y="96" width="42" height="22" rx="6" fill="#38bdf8" />
+                <text x="293" y="111" textAnchor="middle" fontSize="10" fontWeight="700" fill="#060c18">DCA</text>
+
+                {/* ── SL label — bottom right ── */}
+                <rect x="272" y="155" width="42" height="24" rx="7" fill="#ef5350" />
+                <text x="293" y="172" textAnchor="middle" fontSize="11" fontWeight="700" fill="white">SL</text>
+              </svg>
+            </div>
+            <div className="rounded-2xl p-6" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">Copy Trading</h3>
+              <p className="mt-1 text-sm text-white/50">Mirror the best traders. Anti-rug protection built in.</p>
+              <IllustrationCopyTrading />
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="flex flex-col gap-4">
+            <div className="flex-1 rounded-2xl p-6" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">Smart Routing</h3>
+              <p className="mt-1 text-sm text-white/50">Always buy and sell at the best price with ZYNC smart routing.</p>
+              <IllustrationSmartRouting />
+            </div>
+            <div className="flex-1 rounded-2xl p-6" style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <h3 className="text-base font-bold text-white">AI Research</h3>
+              <p className="mt-1 text-sm text-white/50">Use AI Research tools to find best tokens and wallets.</p>
+              <IllustrationAIResearch />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -532,7 +900,7 @@ export function HomePage() {
       <section style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="mx-auto max-w-[1200px] px-6 py-24">
           <div ref={howHeadRef} className="mb-14 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>How it works</p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>HOW IT WORKS</p>
             <h2 className="text-4xl font-bold text-white">Start trading in 4 steps</h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
