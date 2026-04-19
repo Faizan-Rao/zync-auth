@@ -961,82 +961,74 @@ export function HomePage() {
             </p>
           </div>
 
-          {/* Fish-in-water coin flow */}
-          <div className="relative mx-auto mt-12 overflow-hidden rounded-2xl"
-            style={{ height: 280, background: "linear-gradient(180deg, #0a2a4a 0%, #0d3b6e 30%, #0a2a4a 60%, #061a30 100%)", border: "1px solid rgba(56,189,248,0.2)" }}>
-
-            {/* Animated water caustic layers */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              background: "radial-gradient(ellipse 80% 40% at 20% 50%, rgba(56,189,248,0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 30% at 80% 40%, rgba(56,189,248,0.06) 0%, transparent 70%)",
-              animation: "waterShift 8s ease-in-out infinite alternate"
-            }} />
-            <div className="absolute inset-0 pointer-events-none" style={{
-              background: "radial-gradient(ellipse 50% 25% at 50% 70%, rgba(14,116,144,0.12) 0%, transparent 70%)",
-              animation: "waterShift2 6s ease-in-out infinite alternate"
-            }} />
-
-            {/* Wave lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.07 }}>
-              <path d="M0,80 Q200,60 400,80 T800,80 T1200,80" stroke="#38bdf8" strokeWidth="1.5" fill="none" style={{ animation: "waveLine 4s ease-in-out infinite alternate" }} />
-              <path d="M0,140 Q200,120 400,140 T800,140 T1200,140" stroke="#38bdf8" strokeWidth="1" fill="none" style={{ animation: "waveLine 5s ease-in-out infinite alternate-reverse" }} />
-              <path d="M0,200 Q200,180 400,200 T800,200 T1200,200" stroke="#38bdf8" strokeWidth="1.5" fill="none" style={{ animation: "waveLine 3.5s ease-in-out infinite alternate" }} />
-            </svg>
-
-            {/* Light rays from top */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {[15, 35, 55, 75].map((left, i) => (
-                <div key={i} className="absolute top-0" style={{
-                  left: `${left}%`,
-                  width: 60,
-                  height: "100%",
-                  background: "linear-gradient(180deg, rgba(56,189,248,0.06) 0%, transparent 80%)",
-                  transform: `skewX(${i % 2 === 0 ? -8 : 8}deg)`,
-                  animation: `lightRay ${3 + i * 0.7}s ease-in-out ${i * 0.5}s infinite alternate`,
-                }} />
-              ))}
-            </div>
-
-            {/* Coins flowing like fish - each on a sine-wave path */}
+          {/* Circular ring layout */}
+          <div className="relative mx-auto mt-16 flex items-center justify-center" style={{ height: 600 }}>
+            {/* Single circular ring with all icons */}
             {[
-              { img: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",     label: "BTC",  swimDur: 14, bobDur: 2.1, delay: 0,    yBase: 40,  size: 64 },
-              { img: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",  label: "ETH",  swimDur: 22, bobDur: 3.4, delay: -4,   yBase: 110, size: 60 },
-              { img: "https://assets.coingecko.com/coins/images/4128/large/solana.png",   label: "SOL",  swimDur: 9,  bobDur: 1.5, delay: -8,   yBase: 185, size: 56 },
-              { img: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png", label: "BNB", swimDur: 18, bobDur: 2.8, delay: -2, yBase: 70,  size: 58 },
-              { img: "https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg", label: "PEPE", swimDur: 11, bobDur: 1.8, delay: -6, yBase: 155, size: 52 },
-              { img: "https://assets.coingecko.com/coins/images/12559/large/Avalanche_Circle_RedWhite_Trans.png", label: "AVAX", swimDur: 25, bobDur: 4.0, delay: -10, yBase: 30, size: 54 },
-              { img: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png", label: "LINK", swimDur: 16, bobDur: 2.5, delay: -3, yBase: 210, size: 50 },
-              { img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png", label: "UNI", swimDur: 8,  bobDur: 1.2, delay: -7, yBase: 130, size: 56 },
-              { img: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png", label: "USDC", swimDur: 20, bobDur: 3.1, delay: -1, yBase: 90, size: 52 },
-              { img: "https://assets.coingecko.com/coins/images/325/large/Tether.png", label: "USDT", swimDur: 13, bobDur: 2.0, delay: -9, yBase: 170, size: 50 },
-              { img: "https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg", label: "ARB", swimDur: 28, bobDur: 4.5, delay: -5, yBase: 55, size: 54 },
-              { img: "https://assets.coingecko.com/coins/images/17980/large/ton_symbol.png", label: "TON", swimDur: 10, bobDur: 1.6, delay: -13, yBase: 120, size: 56 },
-              { img: "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png", label: "WBTC", swimDur: 19, bobDur: 3.0, delay: -16, yBase: 220, size: 54 },
-              { img: "https://assets.coingecko.com/coins/images/13397/large/Graph_Token.png", label: "GRT", swimDur: 7,  bobDur: 1.1, delay: -15, yBase: 145, size: 48 },
-              { img: "https://assets.coingecko.com/coins/images/10775/large/COMP.png", label: "COMP", swimDur: 24, bobDur: 3.8, delay: -14, yBase: 75, size: 50 },
-            ].map(({ img, label, swimDur, bobDur, delay, yBase, size }) => (
-              <div key={label} className="absolute"
-                style={{
-                  top: yBase,
-                  left: 0,
-                  animation: `fishSwim${label} ${swimDur}s linear ${delay}s infinite`,
-                }}>
-                <div className="rounded-full overflow-hidden shadow-lg"
+              { img: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png", angle: 0 },
+              { img: "https://assets.coingecko.com/coins/images/279/large/ethereum.png", angle: 15 },
+              { img: "https://assets.coingecko.com/coins/images/4128/large/solana.png", angle: 30 },
+              { img: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png", angle: 45 },
+              { img: "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png", angle: 60 },
+              { img: "https://assets.coingecko.com/coins/images/12559/large/Avalanche_Circle_RedWhite_Trans.png", angle: 75 },
+              { img: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png", angle: 90 },
+              { img: "https://assets.coingecko.com/coins/images/325/large/Tether.png", angle: 105 },
+              { img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png", angle: 120 },
+              { img: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png", angle: 135 },
+              { img: "https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg", angle: 150 },
+              { img: "https://assets.coingecko.com/coins/images/25244/large/Optimism.png", angle: 165 },
+              { img: "https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg", angle: 180 },
+              { img: "https://assets.coingecko.com/coins/images/17980/large/ton_symbol.png", angle: 195 },
+              { img: "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png", angle: 210 },
+              { img: "https://assets.coingecko.com/coins/images/13397/large/Graph_Token.png", angle: 225 },
+              { img: "https://assets.coingecko.com/coins/images/10775/large/COMP.png", angle: 240 },
+              { img: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png", angle: 255 },
+              { img: "https://assets.coingecko.com/coins/images/2518/large/weth.png", angle: 270 },
+              { img: "https://assets.coingecko.com/coins/images/9956/large/Badge_Dai.png", angle: 285 },
+              { img: "https://assets.coingecko.com/coins/images/3406/large/SNX.png", angle: 300 },
+              { img: "https://assets.coingecko.com/coins/images/12645/large/AAVE.png", angle: 315 },
+              { img: "https://assets.coingecko.com/coins/images/2/large/litecoin.png", angle: 330 },
+              { img: "https://assets.coingecko.com/coins/images/975/large/cardano.png", angle: 345 },
+            ].map(({ img, angle }, idx) => {
+              const radius = 250;
+              const size = 60;
+              const radian = ((angle - 90) * Math.PI) / 180;
+              const x = Math.cos(radian) * radius;
+              const y = Math.sin(radian) * radius;
+              
+              return (
+                <div
+                  key={idx}
+                  className="absolute rounded-full overflow-hidden shadow-2xl"
                   style={{
                     width: size,
                     height: size,
-                    border: "2px solid rgba(255,255,255,0.15)",
-                    background: "rgba(10,20,40,0.9)",
-                    animation: `fishBob ${bobDur}s ease-in-out ${delay}s infinite`,
-                  }}>
-                  <img src={img} alt={label} className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    left: `calc(50% + ${x}px - ${size / 2}px)`,
+                    top: `calc(50% + ${y}px - ${size / 2}px)`,
+                    border: "3px solid rgba(56,189,248,0.3)",
+                    background: "rgba(10,20,40,0.95)",
+                    animation: `float ${3 + (idx % 5)}s ease-in-out ${idx * 0.2}s infinite`,
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(56,189,248,0.2)",
+                  }}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </div>
-              </div>
-            ))}
-
-            {/* Glow overlay at edges */}
-            <div className="absolute inset-y-0 left-0 w-16 pointer-events-none" style={{ background: "linear-gradient(90deg, rgba(5,15,35,1), transparent)" }} />
-            <div className="absolute inset-y-0 right-0 w-16 pointer-events-none" style={{ background: "linear-gradient(-90deg, rgba(5,15,35,1), transparent)" }} />
+              );
+            })}
+            
+            {/* Visible ring circle */}
+            <div 
+              className="absolute rounded-full"
+              style={{
+                width: 500,
+                height: 500,
+                border: "2px solid rgba(239,83,80,0.4)",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "none",
+              }}
+            />
           </div>
 
           {/* Feature pills below */}
