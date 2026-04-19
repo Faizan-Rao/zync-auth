@@ -55,6 +55,18 @@ export function AppLayout() {
             >
               Trade
             </NavLink>
+            <NavLink
+              to="/docs"
+              className={({ isActive }) =>
+                `rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-[rgba(0,217,192,0.15)] text-[#00d9c0]"
+                    : "text-white/45 hover:bg-white/[0.04] hover:text-white"
+                }`
+              }
+            >
+              Docs
+            </NavLink>
           </nav>
         </div>
         <WalletBar expectedChainId={cfg.chain_id} />

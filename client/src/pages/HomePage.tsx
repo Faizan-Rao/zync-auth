@@ -790,7 +790,7 @@ export function HomePage() {
           <div className="flex gap-4" style={{ animation: "badgeScroll 30s linear infinite", width: "max-content" }}>
             {[
               { name: "Binance", img: "/wallets/binance.svg" },
-              { name: "Coinbase", img: "/wallets/coinbase.png" },
+              { name: "Coinbase", img: "https://assets.coingecko.com/markets/images/23/large/Coinbase_Coin_Primary.png" },
               { name: "MetaMask", img: "/wallets/metamask.svg" },
               { name: "Phantom", img: "/wallets/phantom.png" },
               { name: "Trust Wallet", img: "/wallets/trust.png" },
@@ -807,7 +807,7 @@ export function HomePage() {
               { name: "Aave", img: "https://aave.com/favicon.ico" },
               /* duplicate for seamless loop */
               { name: "Binance2", img: "/wallets/binance.svg" },
-              { name: "Coinbase2", img: "/wallets/coinbase.png" },
+              { name: "Coinbase2", img: "https://assets.coingecko.com/markets/images/23/large/Coinbase_Coin_Primary.png" },
               { name: "MetaMask2", img: "/wallets/metamask.svg" },
               { name: "Phantom2", img: "/wallets/phantom.png" },
               { name: "Trust Wallet2", img: "/wallets/trust.png" },
@@ -823,9 +823,8 @@ export function HomePage() {
               { name: "Curve2", img: "https://curve.fi/favicon.ico" },
               { name: "Aave2", img: "https://aave.com/favicon.ico" },
             ].map(({ name, img }) => (
-              <div key={name} className="flex items-center gap-2.5 rounded-full px-4 py-2 shrink-0"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <img src={img} alt={name.replace(/\d+$/, "")} className="h-5 w-5 rounded-full object-cover"
+              <div key={name} className="flex items-center gap-2.5 px-4 py-2 shrink-0">
+                <img src={img} alt={name.replace(/\d+$/, "")} className="h-10 w-10 rounded-full object-cover"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 <span className="text-sm font-medium whitespace-nowrap" style={{ color: "rgba(255,255,255,0.55)" }}>
                   {name.replace(/\d+$/, "")}
