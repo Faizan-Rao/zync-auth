@@ -246,24 +246,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-function StepCard({ n, title, desc, last, delay }: { n: string; title: string; desc: string; last: boolean; delay: number }) {
-  const ref = useFadeIn(delay);
-  return (
-    <div ref={ref} className="relative rounded-2xl p-6"
-      style={{ background: "#0d1424", border: "1px solid rgba(255,255,255,0.07)" }}>
-      <div className="mb-4 text-4xl font-black" style={{ color: "rgba(56,189,248,0.2)" }}>{n}</div>
-      <h3 className="mb-2 text-base font-semibold text-white">{title}</h3>
-      <p className="text-sm leading-relaxed text-white/50">{desc}</p>
-      {!last && (
-        <div className="absolute -right-3 top-1/2 hidden -translate-y-1/2 lg:block">
-          <svg className="h-6 w-6 text-white/15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" d="M9 18l6-6-6-6"/>
-          </svg>
-        </div>
-      )}
-    </div>
-  );
-}
 
 type MarketRow = { id: string; base: string; quote: string; mark_price: number; change_24h_pct: number; max_leverage: number };
 const BASE_IMG: Record<string, string> = {
@@ -377,6 +359,12 @@ function MiniSwapWidget() {
 function IllustrationFastExecution() {
   return (
     <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 130" style={{ background: "#0a0f1a" }}>
+      <defs>
+        {/* two separate paths: left connector and right connector */}
+        <path id="fe-path-l" d="M88,52 L118,52" />
+        <path id="fe-path-r" d="M222,52 L252,52" />
+      </defs>
+
       {/* ── dashed connecting lines ── */}
       <line x1="88" y1="52" x2="118" y2="52" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4,3" />
       <line x1="222" y1="52" x2="252" y2="52" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4,3" />
@@ -387,9 +375,17 @@ function IllustrationFastExecution() {
       <text x="53" y="46" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.35)">Block</text>
       <text x="53" y="64" textAnchor="middle" fontSize="16" fontWeight="800" fill="rgba(255,255,255,0.3)">N-1</text>
 
-      {/* ── Block N (active, green border) ── */}
+      {/* ── Block N (active, green border with pulse) ── */}
       <rect x="118" y="10" width="104" height="84" rx="10"
-        fill="rgba(61,255,160,0.06)" stroke="#3dffa0" strokeWidth="2" />
+        fill="rgba(61,255,160,0.06)" stroke="#3dffa0" strokeWidth="2">
+        <animate attributeName="opacity" values="1;0.6;1" dur="2s" repeatCount="indefinite" />
+      </rect>
+      {/* glow ring pulse */}
+      <rect x="114" y="6" width="112" height="92" rx="13"
+        fill="none" stroke="rgba(61,255,160,0.25)" strokeWidth="3">
+        <animate attributeName="stroke-width" values="3;8;3" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
+      </rect>
       <text x="170" y="32" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(255,255,255,0.7)">Block N</text>
       {/* ZYNC TX inner box */}
       <rect x="130" y="38" width="80" height="30" rx="6" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.5)" strokeWidth="1" />
@@ -406,6 +402,29 @@ function IllustrationFastExecution() {
       <rect x="258" y="88" width="58" height="20" rx="5" fill="rgba(239,83,80,0.15)" stroke="rgba(239,83,80,0.4)" strokeWidth="1" />
       <text x="287" y="102" textAnchor="middle" fontSize="9" fill="#ef5350">Others</text>
       <text x="287" y="120" textAnchor="middle" fontSize="8" fill="rgba(239,83,80,0.6)">~400ms wait</text>
+
+      {/* ── animated dot on left connector (N-1 → Block N) ── */}
+      <circle r="4" fill="#3dffa0" opacity="0.9">
+        <animateMotion dur="2.4s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#fe-path-l" />
+        </animateMotion>
+      </circle>
+      <circle r="7" fill="none" stroke="rgba(61,255,160,0.3)" strokeWidth="2">
+        <animateMotion dur="2.4s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#fe-path-l" />
+        </animateMotion>
+      </circle>
+      {/* ── animated dot on right connector (Block N → N+1) ── */}
+      <circle r="4" fill="#3dffa0" opacity="0.9">
+        <animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#fe-path-r" />
+        </animateMotion>
+      </circle>
+      <circle r="7" fill="none" stroke="rgba(61,255,160,0.3)" strokeWidth="2">
+        <animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#fe-path-r" />
+        </animateMotion>
+      </circle>
     </svg>
   );
 }
@@ -452,8 +471,9 @@ function IllustrationSmartRouting() {
         </marker>
       </defs>
 
-      {/* ── token circle (left) ── */}
+      {/* ── token circle (left) with frog icon ── */}
       <circle cx="52" cy="110" r="32" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.4)" strokeWidth="1.5" />
+      <text x="52" y="118" textAnchor="middle" fontSize="28">🐸</text>
 
       {/* ── exchange boxes ── */}
       {routes.map((r) => (
@@ -495,15 +515,11 @@ function IllustrationSmartRouting() {
 }
 
 function IllustrationVolatilityBot() {
-  // peaks (SELL) and troughs (BUY) in viewBox 340x160
-  // zigzag: start low, alternate trough→peak→trough...
-  // points: (0,130) trough, (50,55) peak, (90,120) trough, (140,35) peak, (175,115) trough, (215,50) peak, (255,125) trough, (295,45) peak, (340,100)
   const pts = "0,130 50,55 90,120 140,35 175,115 215,50 255,125 295,45 340,100";
   const polyPts = pts + " 340,160 0,160";
 
   const peaks   = [ { x: 50,  y: 55  }, { x: 140, y: 35  }, { x: 215, y: 50  }, { x: 295, y: 45  } ];
   const troughs = [ { x: 0,   y: 130 }, { x: 90,  y: 120 }, { x: 175, y: 115 }, { x: 255, y: 125 } ];
-  // only label 2 peaks and 2 troughs like origin
   const sellLabels = [peaks[1], peaks[3]];
   const buyLabels  = [troughs[1], troughs[2]];
 
@@ -514,6 +530,7 @@ function IllustrationVolatilityBot() {
           <stop offset="0%" stopColor="rgba(56,189,248,0.45)" />
           <stop offset="100%" stopColor="rgba(56,189,248,0.02)" />
         </linearGradient>
+        <path id="vbot-path" d={`M${pts.split(' ').join(' L')}`} />
       </defs>
 
       {/* filled area */}
@@ -530,75 +547,79 @@ function IllustrationVolatilityBot() {
         <circle key={i} cx={p.x} cy={p.y} r="5" fill="#3dffa0" />
       ))}
 
-      {/* SELL labels above selected peaks */}
+      {/* SELL labels */}
       {sellLabels.map((p, i) => (
         <text key={i} x={p.x} y={p.y - 10} textAnchor="middle" fontSize="9" fontWeight="700" fill="#ef5350">SELL</text>
       ))}
-      {/* BUY labels below selected troughs */}
+      {/* BUY labels */}
       {buyLabels.map((p, i) => (
         <text key={i} x={p.x} y={p.y + 16} textAnchor="middle" fontSize="9" fontWeight="700" fill="#3dffa0">BUY</text>
       ))}
+
+      {/* ── animated dot traveling the zigzag ── */}
+      <circle r="5" fill="#fff" opacity="0.95">
+        <animateMotion dur="4s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#vbot-path" />
+        </animateMotion>
+      </circle>
+      {/* glow ring */}
+      <circle r="9" fill="none" stroke="rgba(56,189,248,0.4)" strokeWidth="2">
+        <animateMotion dur="4s" repeatCount="indefinite" calcMode="linear">
+          <mpath href="#vbot-path" />
+        </animateMotion>
+      </circle>
     </svg>
   );
 }
 
 function IllustrationCopyTrading() {
+  // Box centers: left box center x=64, y=70; right box center x=276, y=70
+  // COPY badge center x=170, y=70
+  // Connector lines: left box right edge x=118 → COPY left edge x=138; COPY right edge x=202 → right box left edge x=222
   return (
     <svg className="mt-4 w-full rounded-xl" viewBox="0 0 340 140" style={{ background: "#0a0f1a" }}>
       <defs>
-        {/* arrow marker left→right */}
         <marker id="ct-arr-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
           <path d="M0,0 L6,3 L0,6 Z" fill="#3dffa0" />
         </marker>
-        {/* arrow marker right→left */}
         <marker id="ct-arr-l" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
           <path d="M6,0 L0,3 L6,6 Z" fill="#3dffa0" />
         </marker>
-        {/* animated dot path left→right */}
-        <path id="ct-path-r" d="M118,70 L175,70" />
-        {/* animated dot path right→left */}
-        <path id="ct-path-l" d="M222,70 L165,70" />
       </defs>
 
       {/* ── Left box: Wallet 1 (blue border) ── */}
       <rect x="10" y="15" width="108" height="110" rx="12"
         fill="rgba(56,189,248,0.06)" stroke="#38bdf8" strokeWidth="1.5" />
-      <text x="64" y="38" textAnchor="middle" fontSize="11" fontWeight="600" fill="#38bdf8">Wallet 1</text>
-      <text x="64" y="56" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
-      {/* Pepe-like token circle */}
-      <circle cx="46" cy="95" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
-      <text x="46" y="100" textAnchor="middle" fontSize="14">🐸</text>
-      <text x="82" y="100" textAnchor="middle" fontSize="12" fontWeight="700" fill="white">1 ETH</text>
+      <text x="64" y="40" textAnchor="middle" fontSize="11" fontWeight="600" fill="#38bdf8">Wallet 1</text>
+      <text x="64" y="58" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
+      <circle cx="46" cy="97" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
+      <text x="46" y="102" textAnchor="middle" fontSize="14">🐸</text>
+      <text x="82" y="102" textAnchor="middle" fontSize="12" fontWeight="700" fill="white">1 ETH</text>
 
-      {/* ── COPY badge in center ── */}
+      {/* ── connector line left box → COPY (both at y=70) ── */}
+      <line x1="118" y1="70" x2="136" y2="70" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-r)" />
+
+      {/* ── COPY badge (blinking) ── */}
       <rect x="138" y="56" width="64" height="28" rx="14"
-        fill="rgba(61,255,160,0.12)" stroke="#3dffa0" strokeWidth="1.5" />
-      <text x="170" y="75" textAnchor="middle" fontSize="11" fontWeight="800" fill="#3dffa0">COPY</text>
+        fill="rgba(61,255,160,0.12)" stroke="#3dffa0" strokeWidth="1.5">
+        <animate attributeName="opacity" values="1;0.3;1" dur="1.4s" repeatCount="indefinite" />
+      </rect>
+      <text x="170" y="75" textAnchor="middle" fontSize="11" fontWeight="800" fill="#3dffa0">
+        COPY
+        <animate attributeName="opacity" values="1;0.3;1" dur="1.4s" repeatCount="indefinite" />
+      </text>
 
-      {/* arrows */}
-      <line x1="120" y1="65" x2="136" y2="65" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-r)" />
-      <line x1="220" y1="75" x2="204" y2="75" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-l)" />
+      {/* ── connector line COPY → right box (both at y=70) ── */}
+      <line x1="204" y1="70" x2="220" y2="70" stroke="#3dffa0" strokeWidth="1.5" markerEnd="url(#ct-arr-r)" />
 
       {/* ── Right box: Your Wallet (green border) ── */}
       <rect x="222" y="15" width="108" height="110" rx="12"
         fill="rgba(61,255,160,0.06)" stroke="#3dffa0" strokeWidth="1.5" />
-      <text x="276" y="38" textAnchor="middle" fontSize="11" fontWeight="600" fill="#3dffa0">Your Wallet</text>
-      <text x="276" y="56" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
-      <circle cx="258" cy="95" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
-      <text x="258" y="100" textAnchor="middle" fontSize="14">🐸</text>
-      <text x="294" y="100" textAnchor="middle" fontSize="11" fontWeight="700" fill="white">0.1 ETH</text>
-
-      {/* ── animated dots ── */}
-      <circle r="4" fill="#3dffa0" opacity="0.9">
-        <animateMotion dur="1.5s" repeatCount="indefinite">
-          <mpath href="#ct-path-r" />
-        </animateMotion>
-      </circle>
-      <circle r="4" fill="#3dffa0" opacity="0.9">
-        <animateMotion dur="1.5s" begin="0.75s" repeatCount="indefinite">
-          <mpath href="#ct-path-l" />
-        </animateMotion>
-      </circle>
+      <text x="276" y="40" textAnchor="middle" fontSize="11" fontWeight="600" fill="#3dffa0">Your Wallet</text>
+      <text x="276" y="58" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3dffa0">BUY</text>
+      <circle cx="258" cy="97" r="16" fill="rgba(61,255,160,0.15)" stroke="rgba(61,255,160,0.4)" strokeWidth="1" />
+      <text x="258" y="102" textAnchor="middle" fontSize="14">🐸</text>
+      <text x="294" y="102" textAnchor="middle" fontSize="11" fontWeight="700" fill="white">0.1 ETH</text>
     </svg>
   );
 }
@@ -668,12 +689,6 @@ function IllustrationAIResearch() {
   );
 }
 
-const HOW_STEPS = [
-  { n: "01", title: "Connect your wallet", desc: "Click 'Connect wallet' and choose from MetaMask, Coinbase Wallet, or any injected EVM provider." },
-  { n: "02", title: "Select your tokens",  desc: "Pick the token you want to sell and the one you want to receive. Prices update in real time." },
-  { n: "03", title: "Review & confirm",    desc: "Check the rate, slippage, and gas estimate. Approve the transaction in your wallet." },
-  { n: "04", title: "Done — tokens arrive",desc: "Your new tokens land in your wallet within seconds. No sign-up, no KYC, no custody." },
-];
 
 const FAQS = [
   { q: "What is ZynC?", a: "ZynC is a decentralised trading platform built on EVM-compatible chains. It lets you swap tokens, place limit orders, and trade perpetual futures — all without giving up custody of your assets." },
@@ -768,22 +783,59 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <section className="border-y border-white/[0.06]" style={{ background: "rgba(255,255,255,0.02)" }}>
-        <div ref={statsRef} className="mx-auto grid max-w-[1200px] grid-cols-2 px-6 md:grid-cols-4">
-          {[
-            { label: "24h Volume",    prefix: "$", suffix: "B+", ref: vol.ref,  val: vol.val  },
-            { label: "Open Interest", prefix: "$", suffix: "B+", ref: oi.ref,   val: oi.val   },
-            { label: "Markets",       prefix: "",  suffix: "+",  ref: mkts.ref, val: mkts.val },
-            { label: "Avg. Slippage", prefix: "",  suffix: "%",  ref: null,     val: null, fixed: "0.3" },
-          ].map(({ label, prefix, suffix, ref: r, val, fixed }) => (
-            <div key={label} ref={r ?? undefined} className="flex flex-col items-center justify-center py-10 text-center">
-              <div className="mb-1 text-4xl font-bold text-white">
-                {fixed ?? `${prefix}${val}`}{suffix}
+      {/* ── PARTNER BADGES ── */}
+      <section className="border-y border-white/[0.06] overflow-hidden" style={{ background: "rgba(255,255,255,0.02)" }}>
+        <div className="relative py-6">
+          {/* Scrolling track */}
+          <div className="flex gap-4" style={{ animation: "badgeScroll 30s linear infinite", width: "max-content" }}>
+            {[
+              { name: "Binance", img: "/wallets/binance.svg" },
+              { name: "Coinbase", img: "/wallets/coinbase.png" },
+              { name: "MetaMask", img: "/wallets/metamask.svg" },
+              { name: "Phantom", img: "/wallets/phantom.png" },
+              { name: "Trust Wallet", img: "/wallets/trust.png" },
+              { name: "Rainbow", img: "/wallets/rainbow.png" },
+              { name: "Exodus", img: "/wallets/exodus.png" },
+              { name: "SafePal", img: "/wallets/safepal.png" },
+              { name: "Raydium", img: "https://raydium.io/favicon.ico" },
+              { name: "Uniswap", img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png" },
+              { name: "Jupiter", img: "https://station.jup.ag/favicon.ico" },
+              { name: "PancakeSwap", img: "https://pancakeswap.finance/favicon.ico" },
+              { name: "1inch", img: "https://1inch.io/img/favicon/favicon-32x32.png" },
+              { name: "dYdX", img: "https://dydx.exchange/favicon.ico" },
+              { name: "Curve", img: "https://curve.fi/favicon.ico" },
+              { name: "Aave", img: "https://aave.com/favicon.ico" },
+              /* duplicate for seamless loop */
+              { name: "Binance2", img: "/wallets/binance.svg" },
+              { name: "Coinbase2", img: "/wallets/coinbase.png" },
+              { name: "MetaMask2", img: "/wallets/metamask.svg" },
+              { name: "Phantom2", img: "/wallets/phantom.png" },
+              { name: "Trust Wallet2", img: "/wallets/trust.png" },
+              { name: "Rainbow2", img: "/wallets/rainbow.png" },
+              { name: "Exodus2", img: "/wallets/exodus.png" },
+              { name: "SafePal2", img: "/wallets/safepal.png" },
+              { name: "Raydium2", img: "https://raydium.io/favicon.ico" },
+              { name: "Uniswap2", img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png" },
+              { name: "Jupiter2", img: "https://station.jup.ag/favicon.ico" },
+              { name: "PancakeSwap2", img: "https://pancakeswap.finance/favicon.ico" },
+              { name: "1inch2", img: "https://1inch.io/img/favicon/favicon-32x32.png" },
+              { name: "dYdX2", img: "https://dydx.exchange/favicon.ico" },
+              { name: "Curve2", img: "https://curve.fi/favicon.ico" },
+              { name: "Aave2", img: "https://aave.com/favicon.ico" },
+            ].map(({ name, img }) => (
+              <div key={name} className="flex items-center gap-2.5 rounded-full px-4 py-2 shrink-0"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <img src={img} alt={name.replace(/\d+$/, "")} className="h-5 w-5 rounded-full object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                <span className="text-sm font-medium whitespace-nowrap" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  {name.replace(/\d+$/, "")}
+                </span>
               </div>
-              <div className="text-sm text-white/45">{label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
+          {/* Fade edges */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-24" style={{ background: "linear-gradient(90deg, rgba(6,12,24,1), transparent)" }} />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-24" style={{ background: "linear-gradient(-90deg, rgba(6,12,24,1), transparent)" }} />
         </div>
       </section>
 
@@ -896,18 +948,110 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
+      {/* ── NON-CUSTODIAL ARCHITECTURE ── */}
       <section style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="mx-auto max-w-[1200px] px-6 py-24">
-          <div ref={howHeadRef} className="mb-14 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>HOW IT WORKS</p>
-            <h2 className="text-4xl font-bold text-white">Start trading in 4 steps</h2>
+          <div ref={howHeadRef} className="mb-4 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#38bdf8" }}>Secure</p>
+            <h2 className="text-4xl font-bold text-white">Non-Custodial Architecture</h2>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-white/50">
+              ZYNC brings all the trading tools you need across multiple chains and DEXs for a smooth, integrated experience.
+            </p>
+            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-white/40">
+              The platform is fully non-custodial. Your keys are encrypted and protected, ensuring complete security and control over your assets.
+            </p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {HOW_STEPS.map((s, i) => <StepCard key={s.n} {...s} last={i === HOW_STEPS.length - 1} delay={i * 0.1} />)}
+
+          {/* Fish-in-water coin flow */}
+          <div className="relative mx-auto mt-12 overflow-hidden rounded-2xl"
+            style={{ height: 280, background: "linear-gradient(180deg, #0a2a4a 0%, #0d3b6e 30%, #0a2a4a 60%, #061a30 100%)", border: "1px solid rgba(56,189,248,0.2)" }}>
+
+            {/* Animated water caustic layers */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              background: "radial-gradient(ellipse 80% 40% at 20% 50%, rgba(56,189,248,0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 30% at 80% 40%, rgba(56,189,248,0.06) 0%, transparent 70%)",
+              animation: "waterShift 8s ease-in-out infinite alternate"
+            }} />
+            <div className="absolute inset-0 pointer-events-none" style={{
+              background: "radial-gradient(ellipse 50% 25% at 50% 70%, rgba(14,116,144,0.12) 0%, transparent 70%)",
+              animation: "waterShift2 6s ease-in-out infinite alternate"
+            }} />
+
+            {/* Wave lines */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.07 }}>
+              <path d="M0,80 Q200,60 400,80 T800,80 T1200,80" stroke="#38bdf8" strokeWidth="1.5" fill="none" style={{ animation: "waveLine 4s ease-in-out infinite alternate" }} />
+              <path d="M0,140 Q200,120 400,140 T800,140 T1200,140" stroke="#38bdf8" strokeWidth="1" fill="none" style={{ animation: "waveLine 5s ease-in-out infinite alternate-reverse" }} />
+              <path d="M0,200 Q200,180 400,200 T800,200 T1200,200" stroke="#38bdf8" strokeWidth="1.5" fill="none" style={{ animation: "waveLine 3.5s ease-in-out infinite alternate" }} />
+            </svg>
+
+            {/* Light rays from top */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {[15, 35, 55, 75].map((left, i) => (
+                <div key={i} className="absolute top-0" style={{
+                  left: `${left}%`,
+                  width: 60,
+                  height: "100%",
+                  background: "linear-gradient(180deg, rgba(56,189,248,0.06) 0%, transparent 80%)",
+                  transform: `skewX(${i % 2 === 0 ? -8 : 8}deg)`,
+                  animation: `lightRay ${3 + i * 0.7}s ease-in-out ${i * 0.5}s infinite alternate`,
+                }} />
+              ))}
+            </div>
+
+            {/* Coins flowing like fish - each on a sine-wave path */}
+            {[
+              { img: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",     label: "BTC",  swimDur: 14, bobDur: 2.1, delay: 0,    yBase: 40,  size: 64 },
+              { img: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",  label: "ETH",  swimDur: 22, bobDur: 3.4, delay: -4,   yBase: 110, size: 60 },
+              { img: "https://assets.coingecko.com/coins/images/4128/large/solana.png",   label: "SOL",  swimDur: 9,  bobDur: 1.5, delay: -8,   yBase: 185, size: 56 },
+              { img: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png", label: "BNB", swimDur: 18, bobDur: 2.8, delay: -2, yBase: 70,  size: 58 },
+              { img: "https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg", label: "PEPE", swimDur: 11, bobDur: 1.8, delay: -6, yBase: 155, size: 52 },
+              { img: "https://assets.coingecko.com/coins/images/12559/large/Avalanche_Circle_RedWhite_Trans.png", label: "AVAX", swimDur: 25, bobDur: 4.0, delay: -10, yBase: 30, size: 54 },
+              { img: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png", label: "LINK", swimDur: 16, bobDur: 2.5, delay: -3, yBase: 210, size: 50 },
+              { img: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png", label: "UNI", swimDur: 8,  bobDur: 1.2, delay: -7, yBase: 130, size: 56 },
+              { img: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png", label: "USDC", swimDur: 20, bobDur: 3.1, delay: -1, yBase: 90, size: 52 },
+              { img: "https://assets.coingecko.com/coins/images/325/large/Tether.png", label: "USDT", swimDur: 13, bobDur: 2.0, delay: -9, yBase: 170, size: 50 },
+              { img: "https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg", label: "ARB", swimDur: 28, bobDur: 4.5, delay: -5, yBase: 55, size: 54 },
+              { img: "https://assets.coingecko.com/coins/images/17980/large/ton_symbol.png", label: "TON", swimDur: 10, bobDur: 1.6, delay: -13, yBase: 120, size: 56 },
+              { img: "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png", label: "WBTC", swimDur: 19, bobDur: 3.0, delay: -16, yBase: 220, size: 54 },
+              { img: "https://assets.coingecko.com/coins/images/13397/large/Graph_Token.png", label: "GRT", swimDur: 7,  bobDur: 1.1, delay: -15, yBase: 145, size: 48 },
+              { img: "https://assets.coingecko.com/coins/images/10775/large/COMP.png", label: "COMP", swimDur: 24, bobDur: 3.8, delay: -14, yBase: 75, size: 50 },
+            ].map(({ img, label, swimDur, bobDur, delay, yBase, size }) => (
+              <div key={label} className="absolute"
+                style={{
+                  top: yBase,
+                  left: 0,
+                  animation: `fishSwim${label} ${swimDur}s linear ${delay}s infinite`,
+                }}>
+                <div className="rounded-full overflow-hidden shadow-lg"
+                  style={{
+                    width: size,
+                    height: size,
+                    border: "2px solid rgba(255,255,255,0.15)",
+                    background: "rgba(10,20,40,0.9)",
+                    animation: `fishBob ${bobDur}s ease-in-out ${delay}s infinite`,
+                  }}>
+                  <img src={img} alt={label} className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                </div>
+              </div>
+            ))}
+
+            {/* Glow overlay at edges */}
+            <div className="absolute inset-y-0 left-0 w-16 pointer-events-none" style={{ background: "linear-gradient(90deg, rgba(5,15,35,1), transparent)" }} />
+            <div className="absolute inset-y-0 right-0 w-16 pointer-events-none" style={{ background: "linear-gradient(-90deg, rgba(5,15,35,1), transparent)" }} />
+          </div>
+
+          {/* Feature pills below */}
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            {["Your keys, your crypto", "No KYC required", "Audited contracts", "Multi-chain support", "2FA protected"].map(f => (
+              <span key={f} className="rounded-full px-4 py-1.5 text-xs font-medium text-white/60"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                {f}
+              </span>
+            ))}
           </div>
         </div>
       </section>
+
 
       {/* ── LIVE MARKETS ── */}
       {topMarkets.length > 0 && (
@@ -959,16 +1103,166 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* ── FOOTER ── */}
+      <footer style={{ background: "#060c18", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+        {/* Top footer */}
+        <div className="mx-auto max-w-[1200px] px-6 py-16">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-5">
+
+            {/* Brand column */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-10 w-10 rounded-xl overflow-hidden" style={{ border: "1px solid rgba(56,189,248,0.3)" }}>
+                  <img src="/logo.png" alt="ZYNC" className="w-full h-full object-cover" />
+                </div>
+                <span className="text-xl font-bold text-white">ZYNC</span>
+              </div>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.4)", maxWidth: 280 }}>
+                The next-generation decentralized trading platform. Trade smarter across multiple chains with zero custody risk.
+              </p>
+              {/* Social links */}
+              <div className="flex items-center gap-3">
+                {[
+                  { label: "X", href: "#", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
+                  { label: "Discord", href: "#", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg> },
+                  { label: "Telegram", href: "#", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> },
+                  { label: "GitHub", href: "#", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> },
+                ].map(({ label, href, icon }) => (
+                  <a key={label} href={href}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110"
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }}
+                    aria-label={label}>
+                    {icon}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Links columns */}
+            {[
+              {
+                title: "Product",
+                links: [
+                  { label: "Swap", href: "/swap" },
+                  { label: "Trade", href: "/trade" },
+                  { label: "Markets", href: "/markets" },
+                  { label: "Limit Orders", href: "/limit" },
+                  { label: "Buy Crypto", href: "/buy" },
+                ],
+              },
+              {
+                title: "Resources",
+                links: [
+                  { label: "Documentation", href: "#" },
+                  { label: "Whitepaper", href: "#" },
+                  { label: "API Reference", href: "#" },
+                  { label: "Bug Bounty", href: "#" },
+                  { label: "Audit Reports", href: "#" },
+                ],
+              },
+              {
+                title: "Company",
+                links: [
+                  { label: "About", href: "#" },
+                  { label: "Blog", href: "#" },
+                  { label: "Careers", href: "#" },
+                  { label: "Press Kit", href: "#" },
+                  { label: "Contact", href: "#" },
+                ],
+              },
+            ].map(({ title, links }) => (
+              <div key={title}>
+                <h4 className="mb-4 text-sm font-semibold text-white">{title}</h4>
+                <ul className="space-y-3">
+                  {links.map(({ label, href }) => (
+                    <li key={label}>
+                      <a href={href}
+                        className="text-sm transition-colors hover:text-white"
+                        style={{ color: "rgba(255,255,255,0.4)" }}>
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mx-auto max-w-[1200px] px-6 py-5">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
+              © 2025 ZYNC Protocol. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(l => (
+                <a key={l} href="#" className="text-xs transition-colors hover:text-white/60"
+                  style={{ color: "rgba(255,255,255,0.25)" }}>{l}</a>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full" style={{ background: "#3dffa0", boxShadow: "0 0 6px #3dffa0" }} />
+              <span className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>All systems operational</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
       <style>{`
         @keyframes floatY {
           0%,100% { transform: translateY(0px) rotate(0deg); }
           33%      { transform: translateY(-14px) rotate(3deg); }
           66%      { transform: translateY(-7px) rotate(-2deg); }
         }
+        @keyframes badgeScroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(-50%) translateX(-6px); }
           to   { opacity: 1; transform: translateY(-50%) translateX(0); }
         }
+        @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes orbitSpinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        @keyframes atomOrbit1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes atomOrbit2 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes atomOrbit3 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fishBob {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-12px); }
+        }
+        @keyframes waterShift {
+          0%   { opacity: 0.6; transform: translateX(0px) scaleX(1); }
+          100% { opacity: 1;   transform: translateX(40px) scaleX(1.1); }
+        }
+        @keyframes waterShift2 {
+          0%   { opacity: 0.5; transform: translateX(0px); }
+          100% { opacity: 0.9; transform: translateX(-30px); }
+        }
+        @keyframes waveLine {
+          0%   { d: path("M0,80 Q200,60 400,80 T800,80 T1200,80"); }
+          100% { d: path("M0,80 Q200,100 400,80 T800,80 T1200,80"); }
+        }
+        @keyframes lightRay {
+          0%   { opacity: 0.3; transform: skewX(-8deg) scaleX(0.8); }
+          100% { opacity: 0.8; transform: skewX(-8deg) scaleX(1.2); }
+        }
+        @keyframes fishSwimBTC  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(300px) translateY(-35px); } 50% { transform: translateX(700px) translateY(0px); } 75% { transform: translateX(1000px) translateY(35px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimETH  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(250px) translateY(28px);  } 50% { transform: translateX(650px) translateY(0px); } 75% { transform: translateX(950px)  translateY(-28px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimSOL  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(350px) translateY(-32px);} 50% { transform: translateX(750px) translateY(0px); } 75% { transform: translateX(1050px) translateY(32px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimBNB  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(280px) translateY(40px);  } 50% { transform: translateX(680px) translateY(0px); } 75% { transform: translateX(980px)  translateY(-40px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimPEPE { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(320px) translateY(-25px);} 50% { transform: translateX(720px) translateY(0px); } 75% { transform: translateX(1020px) translateY(25px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimAVAX { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(260px) translateY(30px);  } 50% { transform: translateX(660px) translateY(0px); } 75% { transform: translateX(960px)  translateY(-30px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimLINK { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(340px) translateY(-22px);} 50% { transform: translateX(740px) translateY(0px); } 75% { transform: translateX(1040px) translateY(22px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimUNI  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(290px) translateY(38px);  } 50% { transform: translateX(690px) translateY(0px); } 75% { transform: translateX(990px)  translateY(-38px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimUSDC { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(310px) translateY(-30px);} 50% { transform: translateX(710px) translateY(0px); } 75% { transform: translateX(1010px) translateY(30px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimUSDT { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(270px) translateY(20px);  } 50% { transform: translateX(670px) translateY(0px); } 75% { transform: translateX(970px)  translateY(-20px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimARB  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(330px) translateY(-38px);} 50% { transform: translateX(730px) translateY(0px); } 75% { transform: translateX(1030px) translateY(38px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimTON  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(360px) translateY(-34px);} 50% { transform: translateX(760px) translateY(0px); } 75% { transform: translateX(1060px) translateY(34px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimCOMP { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(240px) translateY(42px);  } 50% { transform: translateX(640px) translateY(0px); } 75% { transform: translateX(940px)  translateY(-42px);} to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimGRT  { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(305px) translateY(-18px);} 50% { transform: translateX(705px) translateY(0px); } 75% { transform: translateX(1005px) translateY(18px); } to { transform: translateX(1300px) translateY(0px); } }
+        @keyframes fishSwimWBTC { from { transform: translateX(-80px)  translateY(0px);  } 25% { transform: translateX(275px) translateY(36px);  } 50% { transform: translateX(675px) translateY(0px); } 75% { transform: translateX(975px)  translateY(-36px);} to { transform: translateX(1300px) translateY(0px); } }
       `}</style>
     </div>
   );
