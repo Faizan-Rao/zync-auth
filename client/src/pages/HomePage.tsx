@@ -1230,7 +1230,7 @@ export function HomePage() {
 
       {/* ── LIVE MARKETS ── */}
       {topMarkets.length > 0 && (
-        <section className="mx-auto max-w-[1200px] px-6 py-24">
+        <section className="mx-auto max-w-[1200px] px-6 pb-8 pt-24">
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#3dffa0" }}>Live markets</p>
@@ -1250,7 +1250,7 @@ export function HomePage() {
       )}
 
       {/* ── STATISTICS ── */}
-      <section className="mx-auto max-w-[1200px] px-6 py-24">
+      <section className="mx-auto max-w-[1200px] px-6 pb-24 pt-4">
         <div ref={statsRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
@@ -1408,10 +1408,10 @@ export function HomePage() {
             
             <div className="space-y-8">
               {[
-                { quarter: "Q1 2025", status: "Completed", color: "#3dffa0", items: ["Platform Launch", "Swap & Limit Orders", "MetaMask Integration", "Audit Completion"] },
-                { quarter: "Q2 2025", status: "In Progress", color: "#38bdf8", items: ["ZYNC Token Launch", "Staking & Governance", "Mobile App Beta", "Multi-Chain Expansion"] },
-                { quarter: "Q3 2025", status: "Planned", color: "#a78bfa", items: ["Perpetual Futures", "Options Trading", "Lending Protocol", "DAO Treasury"] },
-                { quarter: "Q4 2025", status: "Planned", color: "#fbbf24", items: ["Cross-Chain Bridge", "NFT Marketplace", "Social Trading", "Institutional API"] },
+                { quarter: "Q3 2026", status: "In Progress", color: "#38bdf8", items: ["Platform Launch", "Swap & Limit Orders", "MetaMask Integration", "Audit Completion"] },
+                { quarter: "Q4 2026", status: "In Progress", color: "#38bdf8", items: ["ZYNC Token Launch", "Staking & Governance", "Mobile App Beta", "Multi-Chain Expansion"] },
+                { quarter: "Q1 2027", status: "Planned", color: "#a78bfa", items: ["Perpetual Futures", "Options Trading", "Lending Protocol", "DAO Treasury"] },
+                { quarter: "Q2 2027", status: "Planned", color: "#fbbf24", items: ["Cross-Chain Bridge", "NFT Marketplace", "Social Trading", "Institutional API"] },
               ].map(({ quarter, status, color, items }) => (
                 <div key={quarter} className="relative flex gap-6">
                   {/* Timeline dot */}
