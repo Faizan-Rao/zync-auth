@@ -1365,9 +1365,9 @@ export function HomePage() {
           {[
             { name: "Alex Chen", role: "DeFi Trader", img: "/feedback/h-decor-1.png", quote: "ZyncSwap's execution speed is unmatched. I've tried every DEX and this is the fastest by far.", rating: 5 },
             { name: "Sarah Martinez", role: "Crypto Investor", img: "/feedback/h-decor-2.png", quote: "The copy trading feature helped me learn from the best. My portfolio is up 40% this quarter.", rating: 5 },
-            { name: "Mike Johnson", role: "Day Trader", img: "/feedback/h-decor-3.png", quote: "Advanced order types like trailing stops are game-changers. Finally a DEX that gets it.", rating: 5 },
-            { name: "Emma Wilson", role: "Yield Farmer", img: "/feedback/h-decor-4.png", quote: "Smart routing always finds me the best prices. Saved thousands in slippage already.", rating: 5 },
-            { name: "David Kim", role: "Whale Trader", img: "/feedback/h-decor-5.png", quote: "Non-custodial with this level of features? ZyncSwap is the future of DeFi trading.", rating: 5 },
+            { name: "Sophia Johnson", role: "Day Trader", img: "/feedback/h-decor-3.png", quote: "Advanced order types like trailing stops are game-changers. Finally a DEX that gets it.", rating: 5 },
+            { name: "David Lopez", role: "Yield Farmer", img: "/feedback/h-decor-4.png", quote: "Smart routing always finds me the best prices. Saved thousands in slippage already.", rating: 5 },
+            { name: "Emma Wilson", role: "Whale Trader", img: "/feedback/h-decor-5.png", quote: "Non-custodial with this level of features? ZyncSwap is the future of DeFi trading.", rating: 5 },
             { name: "Lisa Brown", role: "NFT Collector", img: "/feedback/h-decor-6.png", quote: "Clean UI, fast swaps, low fees. Everything I need in one place. Highly recommend!", rating: 5 },
           ].map(({ name, role, img, quote, rating }) => (
             <div key={name} className="rounded-2xl p-6"
