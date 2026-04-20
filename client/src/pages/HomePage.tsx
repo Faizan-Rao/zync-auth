@@ -1527,21 +1527,21 @@ export function HomePage() {
               {
                 title: "Resources",
                 links: [
-                  { label: "Documentation", href: "#" },
-                  { label: "Whitepaper", href: "#" },
-                  { label: "API Reference", href: "#" },
-                  { label: "Bug Bounty", href: "#" },
-                  { label: "Audit Reports", href: "#" },
+                  { label: "Documentation", href: "docs" },
+                  { label: "Whitepaper", href: "docs" },
+                  { label: "API Reference", href: "docs" },
+                  { label: "Bug Bounty", href: "docs" },
+                  { label: "Audit Reports", href: "docs" },
                 ],
               },
               {
                 title: "Company",
                 links: [
-                  { label: "About", href: "#" },
-                  { label: "Blog", href: "#" },
-                  { label: "Careers", href: "#" },
-                  { label: "Press Kit", href: "#" },
-                  { label: "Contact", href: "#" },
+                  { label: "About", href: "/" },
+                  { label: "Blog", href: "/" },
+                  { label: "Careers", href: "/" },
+                  { label: "Press Kit", href: "/" },
+                  { label: "Contact", href: "/" },
                 ],
               },
             ].map(({ title, links }) => (
