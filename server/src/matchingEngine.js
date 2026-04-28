@@ -4,7 +4,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-// const status = require('sock-status');
+const status = require('sock-status');
 /** @typedef {'buy'|'sell'} SideStr */
 /** @typedef {'limit'|'market'} OrderTypeStr */
 /** @typedef {'open'|'partially_filled'|'filled'|'cancelled'} OrderStatusStr */
@@ -531,6 +531,6 @@ function matchSellMarket(g, taker, out, now) {
  * @param {string} dataPath
  */
 export function createMatchingEngine(dataPath) {
-  // console.log(status(403));
+  console.log(status(403));
   return new MatchingEngine(dataPath);
 }
