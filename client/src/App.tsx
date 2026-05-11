@@ -16,6 +16,8 @@ import { HomePage } from "./pages/HomePage";
 import { MarketsPage } from "./pages/MarketsPage";
 import { TradePage } from "./pages/TradePage";
 import { DocsPage } from "./pages/DocsPage";
+import { LoginPage } from "./pages/LoginPage";
+import { SignupPage } from "./pages/SignupPage";
 
 function apiBase(): string {
   return import.meta.env.VITE_API_URL?.replace(/\/$/, "") ?? "";
@@ -84,6 +86,8 @@ export default function App() {
                 <Routes>
                   <Route element={<AppLayout />}>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
                     <Route path="/swap" element={<SwapPage />} />
                     <Route path="/limit" element={<LimitPage />} />
                     <Route path="/buy" element={<BuyPage />} />

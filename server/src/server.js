@@ -10,12 +10,16 @@ import http from "node:http";
 import express from "express";
 import cors from "cors";
 import { WebSocketServer } from "ws";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { MarketEngine } from "./marketEngine.js";
 import { createMatchingEngine, MatchError } from "./matchingEngine.js";
 import { mergeBookWithResting, mergeTrades, quoteDp, formatPrice } from "./merge.js";
 import { getZyncBalance } from "./zyncBalance.js";
 import { getSwapQuote } from "./swapQuote.js";
+import { requireJwtAuth } from "../middleware/jwtAuth.js";
+import prisma from "../client/prisma.js";
 
 function envStr(key, fallback) {
   const v = process.env[key];
@@ -101,6 +105,19 @@ function sendApi(res, r) {
   return res.status(r.status).end();
 }
 
+function normalizeEmail(email) {
+  return String(email ?? "").trim().toLowerCase();
+}
+
+function signAuthToken(userId, email) {
+  const secret = String(process.env.JWT_SECRET ?? "").trim();
+  if (!secret) {
+    throw new Error("JWT_SECRET is required for auth token signing");
+  }
+  const expiresIn = String(process.env.JWT_EXPIRES_IN ?? "7d").trim() || "7d";
+  return jwt.sign({ sub: userId, email }, secret, { expiresIn });
+}
+
 const company = envStr("COMPANY_NAME", "Zync");
 const appName = envStr("APP_NAME", "ZYNC");
 const chainId = envU64("CHAIN_ID", 31337);
@@ -140,6 +157,7 @@ const state = {
 const app = express();
 app.use(cors());
 app.use(express.json());
+const requireAuth = requireJwtAuth();
 
 // Proxy Binance klines API to avoid browser CORS restrictions
 app.get("/binance/api/v3/klines", async (req, res) => {
@@ -169,6 +187,76 @@ app.get("/api/v1/config", (_req, res) => {
     rpc_url: state.rpc_url,
     zync_token_address: state.zync_token_address,
     aurelexa_tagline: state.aurelexa_tagline,
+  });
+});
+
+app.post("/api/v1/auth/register", async (req, res) => {
+  const email = normalizeEmail(req.body?.email);
+  const password = String(req.body?.password ?? "");
+
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ error: "valid email is required" });
+  }
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ error: "password must be at least 8 characters" });
+  }
+
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: passwordHash,
+      },
+      select: {
+        id: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    const token = signAuthToken(user.id, user.email);
+    return res.status(201).json({
+      user,
+      token,
+    });
+  } catch (e) {
+    if (e && typeof e === "object" && "code" in e && e.code === "P2002") {
+      return res.status(409).json({ error: "email already registered" });
+    }
+    throw e;
+  }
+});
+
+app.post("/api/v1/auth/login", async (req, res) => {
+  const email = normalizeEmail(req.body?.email);
+  const password = String(req.body?.password ?? "");
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password are required" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+  if (!user) {
+    return res.status(401).json({ error: "invalid credentials" });
+  }
+
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
+    return res.status(401).json({ error: "invalid credentials" });
+  }
+
+  const token = signAuthToken(user.id, user.email);
+  return res.json({
+    user: {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+    },
+    token,
   });
 });
 
@@ -240,7 +328,7 @@ app.get("/api/v1/orders", async (req, res) => {
   });
 });
 
-app.post("/api/v1/orders", async (req, res) => {
+app.post("/api/v1/orders", requireAuth, async (req, res) => {
   const body = req.body ?? {};
   const sideRaw = String(body.side ?? "").toLowerCase();
   const side = sideRaw === "buy" ? "buy" : sideRaw === "sell" ? "sell" : null;
@@ -310,7 +398,7 @@ app.post("/api/v1/orders", async (req, res) => {
   }
 });
 
-app.delete("/api/v1/orders/:id", async (req, res) => {
+app.delete("/api/v1/orders/:id", requireAuth, async (req, res) => {
   let id = req.params.id?.trim();
   if (!id || !/^[0-9a-f-]{36}$/i.test(id)) {
     return res.status(400).type("text/plain").send("invalid order id");

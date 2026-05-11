@@ -12,3 +12,5 @@ contracts/typechain-types
 
 # Server matching state
 server/data/
+
+/generated/prisma
